@@ -32,3 +32,38 @@ export const PATCH = async (
     return new NextResponse("Internal Error", { status: 500 });
   }
 };
+
+export const POST = async (
+  request: NextRequest,
+  { params }: { params: { adminId: string } }
+) => {
+  // verify admin with a secret key
+
+  const { key } = await request.json();
+
+  if (!key) {
+    return new NextResponse("Key is required!");
+  }
+
+  if (!params.adminId) {
+    return new NextResponse("Admin Id is required!");
+  }
+
+  try {
+    const secretKey = process.env.ADMIN_SECRET_KEY;
+
+    if (key !== secretKey) {
+      return NextResponse.json({
+        authentication: false,
+        message: "Wrong Admin key",
+      });
+    }
+
+    return NextResponse.json({
+      authentication: true,
+    });
+  } catch (error) {
+    console.log("[ADMIN-KEY]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+};

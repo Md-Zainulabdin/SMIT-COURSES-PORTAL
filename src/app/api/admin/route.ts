@@ -3,9 +3,11 @@ import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const { name, email, password, role } = await request.json();
+  const { name, email, password, role, avatar } = await request.json();
 
-  if ([name, email, password, role].some((feild) => feild.trim() === "")) {
+  if (
+    [name, email, password, role, avatar].some((feild) => feild.trim() === "")
+  ) {
     return new NextResponse("All feilds are required!");
   }
 
@@ -18,7 +20,7 @@ export const POST = async (request: NextRequest) => {
         email,
         password: hashedPassword,
         role,
-        avatar: "",
+        avatar,
       },
     });
 

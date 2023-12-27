@@ -22,7 +22,9 @@ const Navbar = () => {
                 <Link href={"/courses"}>Courses</Link>
               </li>
               <li>
-                <Button>Login</Button>
+                <Link href={'/user/login'}>
+                  <Button size={"sm"}>Login</Button>
+                </Link>
               </li>
             </ul>
           </div>
