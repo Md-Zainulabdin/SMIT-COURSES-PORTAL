@@ -1,6 +1,7 @@
 "use client";
 // Import necessary modules and components
 
+import axios from "axios";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -47,9 +48,11 @@ const RegisterForm: React.FC = () => {
     setLoading(true);
 
     try {
-      // Add your registration logic here
-      // For example, send a request to the server to create a new user
-      router.push("/user/login"); // Redirect to login page after successful registration
+      const response = await axios.post("/api/user", { ...data, role: "user" });
+
+      if (response) {
+        router.push("/user/login");
+      }
     } catch (error) {
       console.log("error", error);
     } finally {
@@ -61,7 +64,7 @@ const RegisterForm: React.FC = () => {
     <div>
       <div className="form-area">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="name"
