@@ -5,8 +5,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { signIn } from "next-auth/react";
-
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -16,10 +15,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 // Define the form schema
 const formSchema = z.object({
+  name: z.string().min(2, "Name is required!").max(50),
   email: z.string().min(2, "Email is required!").max(50),
   password: z
     .string()
@@ -27,36 +27,29 @@ const formSchema = z.object({
     .max(50),
 });
 
-type LoginFormValues = z.infer<typeof formSchema>;
+type RegisterFormValues = z.infer<typeof formSchema>;
 
-interface LoginFormProps {
-  role: "admin" | "user";
-}
-
-// Define the LoginForm component
-const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
+// Define the RegisterForm component
+const RegisterForm: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<LoginFormValues>({
+  const form = useForm<RegisterFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
     },
   });
 
-  async function onSubmit(data: LoginFormValues) {
+  async function onSubmit(data: RegisterFormValues) {
     setLoading(true);
 
     try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email: data?.email,
-        password: data.password,
-      });
-      router.refresh();
-      router.push("/");
+      // Add your registration logic here
+      // For example, send a request to the server to create a new user
+      router.push("/user/login"); // Redirect to login page after successful registration
     } catch (error) {
       console.log("error", error);
     } finally {
@@ -69,6 +62,23 @@ const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
       <div className="form-area">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <FormField
+              control={form.control}
+              name="name"
+              disabled={loading}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-md font-normal text-muted-foreground">
+                    Name
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter your name..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="email"
@@ -85,22 +95,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
                 </FormItem>
               )}
             />
-
-            {role === "user" && (
-              <div>
-                {/* Additional fields for user role, e.g., Login with Google */}
-                <FormItem>
-                  <FormLabel className="text-md font-normal text-muted-foreground">
-                    Login with Google
-                  </FormLabel>
-                  <FormControl>
-                    {/* Add your Google login button or any other additional fields for user role */}
-                    {/* For example, <GoogleLoginButton {...additionalProps} /> */}
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </div>
-            )}
 
             <FormField
               control={form.control}
@@ -123,13 +117,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
               )}
             />
 
-            <button
+            <Button
               disabled={loading}
               type="submit"
               className="bg-primary text-white p-2 w-full rounded-md transition-colors"
             >
-              Login
-            </button>
+              Register
+            </Button>
           </form>
         </Form>
       </div>
@@ -137,4 +131,4 @@ const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
