@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { NextAuthProvider } from "@/providers/Auth-provider";
 
-const poppins = Poppins({
-  weight: ["100", "300", "500", "600", "700"],
+const inter = Inter({
   subsets: ["latin"],
 });
 
@@ -20,10 +20,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
-        <Navbar />
-        <main className="px-4 md:px-12">{children}</main>
-      </body>
+      <NextAuthProvider>
+        <body className={inter.className}>
+          <Navbar />
+          <main className="px-4 md:px-12">{children}</main>
+        </body>
+      </NextAuthProvider>
     </html>
   );
 }

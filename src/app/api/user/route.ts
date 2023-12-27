@@ -1,9 +1,9 @@
 import prismadb from "@/lib/prisma";
 import bcrypt from "bcrypt";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (req: Request) => {
-  const { name, email, password, role } = await req.json();
+export const POST = async (request: NextRequest) => {
+  const { name, email, password, role } = await request.json();
 
   if ([name, email, password, role].some((feild) => feild.trim() === "")) {
     return new NextResponse("All feilds are required!");
