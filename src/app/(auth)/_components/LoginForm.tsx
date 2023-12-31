@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { FcGoogle } from "react-icons/fc";
 
 // Define the form schema
 const formSchema = z.object({
@@ -86,22 +89,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
               )}
             />
 
-            {role === "user" && (
-              <div>
-                {/* Additional fields for user role, e.g., Login with Google */}
-                <FormItem>
-                  <FormLabel className="text-md font-normal text-muted-foreground">
-                    Login with Google
-                  </FormLabel>
-                  <FormControl>
-                    {/* Add your Google login button or any other additional fields for user role */}
-                    {/* For example, <GoogleLoginButton {...additionalProps} /> */}
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </div>
-            )}
-
             <FormField
               control={form.control}
               name="password"
@@ -123,15 +110,27 @@ const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
               )}
             />
 
-            <button
-              disabled={loading}
-              type="submit"
-              className="bg-primary text-white p-2 w-full rounded-md transition-colors"
-            >
+            <Button disabled={loading} type="submit" className="w-full">
               Login
-            </button>
+            </Button>
           </form>
         </Form>
+      </div>
+
+      {role === "user" && (
+        <div className="py-6">
+          <Separator />
+        </div>
+      )}
+
+      <div>
+        {role === "user" && (
+          <Button className="w-full" variant={"outline"} size={"lg"}>
+            <div className="p-3 flex items-center gap-2 text-muted-foreground">
+              <FcGoogle size={24} /> Login with Google
+            </div>
+          </Button>
+        )}
       </div>
     </div>
   );

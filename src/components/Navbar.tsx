@@ -9,7 +9,7 @@ const Navbar = () => {
       <nav className="w-full flex justify-between items-center">
         <div className="logo">
           <Link href={"/"}>
-            <Image src={"/asset/smit.png"} alt="Logo" width={80} height={80} />
+            <Image src={"/asset/smit.png"} alt="Logo" width={80} height={80} priority />
           </Link>
         </div>
         <div className="menu">
