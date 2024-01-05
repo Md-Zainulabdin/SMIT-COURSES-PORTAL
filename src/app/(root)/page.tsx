@@ -14,6 +14,8 @@ const Home = async () => {
       <div>
         <Hero />
       </div>
+
+      
     </div>
   );
 };

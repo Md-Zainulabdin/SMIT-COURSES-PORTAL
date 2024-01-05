@@ -24,6 +24,7 @@ export const options: NextAuthOptions = {
         try {
           const { email, password } = credentials as MyCredentials;
 
+          // use this action to work with sql database
           const user = (await findUserByEmail(email)) as User;
           const admin = (await findAdminByEmail(email)) as Admin;
 

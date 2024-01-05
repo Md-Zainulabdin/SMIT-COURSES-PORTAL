@@ -58,7 +58,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ role }) => {
         email: data?.email,
         password: data.password,
       });
-      router.refresh();
       router.push("/");
     } catch (error) {
       console.log("error", error);
